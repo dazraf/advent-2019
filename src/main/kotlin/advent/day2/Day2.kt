@@ -34,7 +34,7 @@ fun processOpCode(memory: IntArray, ip: Int): Int {
         1 -> opAdd(memory, ip)
         2 -> opMultiply(memory, ip)
         else -> error("unknown opcode $opCode at position $ip")
-    }.also { memory.println() }
+    }
 }
 
 fun opAdd(memory: IntArray, ip: Int): Int {
@@ -46,8 +46,3 @@ fun opMultiply(memory: IntArray, ip: Int): Int {
     memory[memory[ip + 3]] = memory[memory[ip + 1]] * memory[memory[ip + 2]]
     return ip + 4
 }
-
-fun IntArray.println() {
-    println(joinToString(",") { it.toString() })
-}
-
