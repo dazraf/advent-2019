@@ -1,23 +1,5 @@
 package advent.day2
 
-import kotlin.system.exitProcess
-
-
-fun main() {
-    for (noun in 0..99) {
-        for (verb in 0..99) {
-            val memory = getProgram()
-            memory[1] = noun
-            memory[2] = verb
-            runProgram(memory)
-            if (memory[0] == 19690720) {
-                println(100 * noun + verb)
-                exitProcess(0)
-            }
-        }
-    }
-}
-
 private fun getProgram() =
     intArrayOf(
         1, 0, 0, 3, 1, 1, 2, 3, 1, 3, 4, 3, 1, 5, 0, 3, 2, 1, 9, 19, 1, 13, 19, 23, 2, 23, 9, 27, 1, 6, 27, 31, 2, 10,
@@ -26,6 +8,18 @@ private fun getProgram() =
         1, 95, 5, 99, 1, 99, 13, 103, 2, 103, 9, 107, 1, 6, 107, 111, 1, 111, 5, 115, 1, 115, 2, 119, 1, 5, 119, 0, 99,
         2, 0, 14, 0
     )
+
+fun main() {
+    val (noun, verb) = (0..99).asSequence().flatMap { noun -> (0..99).asSequence().map { verb -> noun to verb } }
+        .first { (noun, verb) ->
+            val memory = getProgram()
+            memory[1] = noun
+            memory[2] = verb
+            runProgram(memory)
+            memory[0] == 19690720
+        }
+    println(100 * noun + verb)
+}
 
 private fun runProgram(memory: IntArray) {
     generateSequence(0) {
@@ -45,27 +39,16 @@ fun processOpCode(memory: IntArray, ip: Int): Int {
 }
 
 fun opAdd(memory: IntArray, ip: Int): Int {
-    val lhs = memory[ip + 1]
-    val rhs = memory[ip + 2]
-    val r = memory[ip + 3]
-    memory[r] = memory[lhs] + memory[rhs]
+    memory[memory[ip + 3]] = memory[memory[ip + 1]] + memory[memory[ip + 2]]
     return ip + 4
 }
 
 fun opMultiply(memory: IntArray, ip: Int): Int {
-    val lhs = memory[ip + 1]
-    val rhs = memory[ip + 2]
-    val r = memory[ip + 3]
-    memory[r] = memory[lhs] * memory[rhs]
+    memory[memory[ip + 3]] = memory[memory[ip + 1]] * memory[memory[ip + 2]]
     return ip + 4
 }
 
 fun IntArray.println() {
     println(joinToString(",") { it.toString() })
-}
-
-private fun loadProgram(): IntArray {
-    val line = readLine() ?: error("null line read")
-    return line.split(',').map { it.trim() }.map { it.toInt() }.toIntArray()
 }
 
