@@ -27,7 +27,10 @@ private enum class Direction(val vector: Vector) {
 
 private data class Step(val direction: Direction, val magnitude: Long)
 private data class Path(val id: Int = 0, val steps: List<Step> = emptyList())
-private data class GridPointData(val coordinates: Vector, val pathIds: Set<Int>, val totalDistance: Long)
+private data class GridPointData(
+  val coordinates: Vector, val pathIds: Set<Int>, val totalDistance: Long
+)
+
 private data class Game(val grid: Map<Vector, GridPointData> = emptyMap())
 
 private operator fun Vector.plus(rhs: Vector) = Vector(x + rhs.x, y + rhs.y)
@@ -53,15 +56,18 @@ private val Game.crossings
 private fun Game.applyPath(path: Path) =
   Game(
     grid + path.walk().mapIndexed { index, point ->
-      point to applyPathIdAtPoint(
-        point, path.id, 1L + index
-      )
+      point to applyToGridPointData(point, path.id, 1L + index)
     })
 
-private fun Game.applyPathIdAtPoint(point: Vector, pathId: Int, distance: Long) =
+private fun Game.applyToGridPointData(point: Vector, pathId: Int, distance: Long) =
   when (val gridPointData = grid[point]) {
-    null -> GridPointData(coordinates = point, pathIds = setOf(pathId), totalDistance =  distance)
-    else -> gridPointData.copy(pathIds = gridPointData.pathIds + pathId, totalDistance = gridPointData.totalDistance + distance)
+    null -> GridPointData(
+      coordinates = point, pathIds = setOf(pathId), totalDistance = distance
+    )
+    else -> gridPointData.copy(
+      pathIds = gridPointData.pathIds + pathId,
+      totalDistance = gridPointData.totalDistance + distance
+    )
   }
 
 private fun read() = readLine()?.let {
