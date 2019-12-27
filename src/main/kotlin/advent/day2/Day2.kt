@@ -29,12 +29,15 @@ private fun runProgram(memory: IntArray) {
     }.last()
 }
 
+val ops = mapOf(
+    1 to ::opAdd,
+    2 to ::opMultiply
+)
+
 fun processOpCode(memory: IntArray, ip: Int): Int {
-    return when (val opCode = memory[ip]) {
-        1 -> opAdd(memory, ip)
-        2 -> opMultiply(memory, ip)
-        else -> error("unknown opcode $opCode at position $ip")
-    }
+    val opCode = memory[ip]
+    val op = ops[memory[ip]] ?: error("unknown opcode $opCode at position $ip")
+    return op(memory, ip)
 }
 
 fun opAdd(memory: IntArray, ip: Int): Int {
