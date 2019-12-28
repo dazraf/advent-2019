@@ -15,7 +15,5 @@ object AddOperation : Operation {
     }
   }
 
-  override fun toString(): String {
-    return "ADD"
-  }
+  override fun toString() = "ADD"
 }

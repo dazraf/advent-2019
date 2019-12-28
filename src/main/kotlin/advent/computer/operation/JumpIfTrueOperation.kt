@@ -11,7 +11,5 @@ object JumpIfTrueOperation : Operation {
     }
   }
 
-  override fun toString(): String {
-    return "JMP_TRUE"
-  }
+  override fun toString() = "JMT"
 }

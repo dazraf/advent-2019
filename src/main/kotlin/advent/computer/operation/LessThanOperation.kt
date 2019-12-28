@@ -14,4 +14,6 @@ object LessThanOperation : Operation {
     }
     return cpu.ip + 4
   }
+
+  override fun toString() = "LT"
 }

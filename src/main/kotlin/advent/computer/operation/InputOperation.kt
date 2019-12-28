@@ -12,7 +12,5 @@ object InputOperation : Operation {
     return cpu.ip + 2
   }
 
-  override fun toString(): String {
-    return "IN"
-  }
+  override fun toString() = "IN"
 }

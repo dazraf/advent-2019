@@ -15,7 +15,5 @@ object MultiplyOperation : Operation {
     }
   }
 
-  override fun toString(): String {
-    return "MLT"
-  }
+  override fun toString() = "MUL"
 }

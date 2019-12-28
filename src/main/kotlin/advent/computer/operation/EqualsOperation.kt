@@ -14,4 +14,6 @@ object EqualsOperation : Operation {
     }
     return cpu.ip + 4
   }
+
+  override fun toString() = "EQ"
 }

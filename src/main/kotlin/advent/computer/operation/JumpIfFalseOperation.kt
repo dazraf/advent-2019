@@ -11,7 +11,5 @@ object JumpIfFalseOperation : Operation {
     }
   }
 
-  override fun toString(): String {
-    return "JMP_FALSE"
-  }
+  override fun toString() = "JMF"
 }
