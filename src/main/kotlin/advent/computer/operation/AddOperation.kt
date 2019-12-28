@@ -10,7 +10,7 @@ object AddOperation : Operation {
       val p2 = parameter(2)
       val p3 = rawParameter(3)
       trace("ADD $p1 $p2 $p3")
-      set(p3, p1 + p2)
+      store(p3, p1 + p2)
       return ip + 4
     }
   }

@@ -5,7 +5,14 @@ import advent.computer.operation.*
 class Computer(
   program: IntArray,
   operations: List<Operation> = listOf(
-    AddOperation, MultiplyOperation, InputOperation, OutputOperation
+    AddOperation,
+    MultiplyOperation,
+    InputOperation,
+    OutputOperation,
+    LessThanOperation,
+    EqualsOperation,
+    JumpIfFalseOperation,
+    JumpIfTrueOperation
   ),
   inputSequence: Sequence<Int> = emptySequence(),
   val output: (Int) -> Unit = { println("output: $it") },

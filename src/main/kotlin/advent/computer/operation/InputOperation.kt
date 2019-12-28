@@ -7,7 +7,7 @@ object InputOperation : Operation {
   override fun execute(cpu: CPU): Int {
     val input = cpu.read()
     val location = cpu.rawParameter(1)
-    cpu.set(location, input)
+    cpu.store(location, input)
     cpu.trace("IN $location $input")
     return cpu.ip + 2
   }
