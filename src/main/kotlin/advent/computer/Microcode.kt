@@ -3,7 +3,9 @@ package advent.computer
 /**
  * Abstract for a CPU "microcode" that's used by an [advent.computer.operation.Operation]
  */
-class CPU(val ip: Int, private val computer: Computer, val trace: (String) -> Unit) {
+class Microcode(
+  val ip: Int, private val computer: Computer, val trace: (String) -> Unit
+) {
 
   // memory ops
 
@@ -23,7 +25,7 @@ class CPU(val ip: Int, private val computer: Computer, val trace: (String) -> Un
 
   /**
    * Read the raw value of a parameter from a given [position]. No address translation is
-   * performed. This is equivalent to [Mode.IMMEDIATE]
+   * performed. This is equivalent to [ParameterMode.IMMEDIATE]
    */
   fun rawParameter(position: Int) =
     fetch(ip + position).also { trace("raw parameter @$position $it") }
@@ -36,8 +38,8 @@ class CPU(val ip: Int, private val computer: Computer, val trace: (String) -> Un
     val mode = InstructionFunctions.modeFromInstruction(computer.memory[ip], position)
     val paramValue = fetch(ip + position)
     return when (mode) {
-      Mode.POSITION -> computer.memory[paramValue]
-      Mode.IMMEDIATE -> paramValue
+      ParameterMode.POSITION -> computer.memory[paramValue]
+      ParameterMode.IMMEDIATE -> paramValue
     }.also {
       trace("parameter @$position $it")
     }

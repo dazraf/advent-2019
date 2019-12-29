@@ -1,11 +1,11 @@
 package advent.computer.operation
 
-import advent.computer.CPU
+import advent.computer.Microcode
 
 object MultiplyOperation : Operation {
   override val opCode: OpCode = 2
-  override fun execute(cpu: CPU): Int {
-    cpu.apply {
+  override fun execute(microcode: Microcode): Int {
+    microcode.apply {
       val p1 = parameter(1)
       val p2 = parameter(2)
       val p3 = rawParameter(3)

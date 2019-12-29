@@ -16,7 +16,8 @@ class Computer(
   ),
   inputSequence: Sequence<Int> = emptySequence(),
   val output: (Int) -> Unit = { println("output: $it") },
-  val trace: (String) -> Unit = { }
+  val haltHandler: () -> Unit = {},
+  val trace: (String) -> Unit = {}
 ) {
 
   internal val memory = Memory(program)
@@ -27,7 +28,10 @@ class Computer(
   fun runProgram() {
     generateSequence(0) {
       when (opCode(it)) {
-        99 -> null.also { trace("HALT") }
+        99 -> null.also {
+          trace("HALT")
+          haltHandler()
+        }
         else -> processOpCode(it)
       }
     }.last()
@@ -37,7 +41,7 @@ class Computer(
     val opCode = opCode(ip)
     val op = ops[opCode] ?: error("unknown opcode $opCode at position $ip")
     trace("EXEC @$ip $op")
-    return op.execute(CPU(ip, this, trace))
+    return op.execute(Microcode(ip, this, trace))
   }
 
   private fun opCode(ip: Int): OpCode = memory[ip] % 100

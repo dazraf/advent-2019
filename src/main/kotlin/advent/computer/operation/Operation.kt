@@ -1,6 +1,6 @@
 package advent.computer.operation
 
-import advent.computer.CPU
+import advent.computer.Microcode
 
 typealias OpCode = Int
 
@@ -13,6 +13,6 @@ interface Operation {
   /**
    * @return the new IP
    */
-  fun execute(cpu: CPU): Int
+  fun execute(microcode: Microcode): Int
 }
 

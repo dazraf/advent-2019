@@ -2,8 +2,8 @@ package advent.computer
 
 import advent.computer.InstructionFunctions.modeFromInstruction
 import advent.computer.InstructionFunctions.opCodeFromInstruction
-import advent.computer.Mode.IMMEDIATE
-import advent.computer.Mode.POSITION
+import advent.computer.ParameterMode.IMMEDIATE
+import advent.computer.ParameterMode.POSITION
 import org.junit.Assert.*
 import org.junit.Test
 
