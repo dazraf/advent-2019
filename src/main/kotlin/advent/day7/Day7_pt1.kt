@@ -27,7 +27,8 @@ fun main() {
   )
   permutation((0..4).toList())
     .map { phaseVector -> runAmplifiers(phaseVector, program) }
-    .max().also { println("max: $it") }
+    .max()
+    .also { println("maximum thrust: $it") }
 }
 
 fun runAmplifiers(phaseVector: List<Int>, program: IntArray): Int {
