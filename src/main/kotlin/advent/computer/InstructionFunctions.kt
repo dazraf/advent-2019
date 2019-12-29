@@ -4,6 +4,7 @@ import advent.computer.operation.OpCode
 
 object InstructionFunctions {
   fun opCodeFromInstruction(instruction: Int): OpCode = instruction % 100
+
   fun modeFromInstruction(instruction: Int, parameterPosition: Int): ParameterMode {
     if (parameterPosition <= 0) error(
       "parameter position should be 1 based but instead got $parameterPosition"
