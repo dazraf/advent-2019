@@ -1,5 +1,8 @@
 package advent.day7
 
+/**
+ * Simple, recursive approach for generating permutations of a list
+ */
 fun <T> permutation(items: List<T>): Sequence<List<T>> {
   return sequence {
     when {

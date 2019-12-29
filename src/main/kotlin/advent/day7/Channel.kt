@@ -1,6 +1,7 @@
 package advent.day7
 
 import java.util.concurrent.LinkedBlockingQueue
+import kotlin.concurrent.thread
 
 /**
  * A simple channel construct, presenting a queue as both a sequence for reading and
@@ -8,16 +9,23 @@ import java.util.concurrent.LinkedBlockingQueue
  */
 class Channel {
 
+  companion object {
+    fun channel() = Channel()
+  }
+
   private val queue = LinkedBlockingQueue<Int>()
-  fun reader(): Sequence<Int> {
-    return generateSequence {
-      queue.take()
+  val reader = generateSequence {
+    queue.take()
+  }
+
+  fun register(fn: (Int) -> Unit) {
+    // dirty - we should have a mechanism to stop this thread when its no longer required
+    thread(isDaemon = true) {
+      reader.forEach(fn)
     }
   }
 
-  fun writer(): (Int) -> Unit {
-    return {
-      queue.put(it)
-    }
+  val writer = { value: Int ->
+    queue.put(value)
   }
 }
