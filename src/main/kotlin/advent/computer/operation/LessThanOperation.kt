@@ -2,7 +2,13 @@ package advent.computer.operation
 
 import advent.computer.Microcode
 
-object LessThanOperation : Operation {
+/**
+ * Checks that value of parameter 1 is less than parameter 2 and stores the result
+ * in the address referenced in parameter 3
+ */
+object LessThanOperation : Operation() {
+
+  override val symbol = "LT"
   override val opCode: OpCode = 7
   override fun execute(microcode: Microcode): Int {
     val p1 = microcode.parameter(1)
@@ -14,6 +20,4 @@ object LessThanOperation : Operation {
     }
     return microcode.ip + 4
   }
-
-  override fun toString() = "LT"
 }

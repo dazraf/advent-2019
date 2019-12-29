@@ -4,15 +4,27 @@ import advent.computer.Microcode
 
 typealias OpCode = Int
 
-interface Operation {
+/**
+ * Abstract class for all operations
+ */
+abstract class Operation {
+
+  /**
+   * Symbol
+   */
+  abstract val symbol: String
+
   /**
    * numeric op code for this operation
    */
-  val opCode: OpCode
+  abstract val opCode: OpCode
 
   /**
+   * Executes the op code given a [microcode] interface
    * @return the new IP
    */
-  fun execute(microcode: Microcode): Int
+  abstract fun execute(microcode: Microcode): Int
+
+  override fun toString() = symbol
 }
 

@@ -2,7 +2,12 @@ package advent.computer.operation
 
 import advent.computer.Microcode
 
-object JumpIfFalseOperation : Operation {
+/**
+ * Checks the value of parameter 1 for 0 and jumps to the address in parameter 2 if true
+ */
+object JumpIfFalseOperation : Operation() {
+
+  override val symbol = "JMF"
   override val opCode: OpCode = 6
   override fun execute(microcode: Microcode): Int {
     return when (microcode.parameter(1)) {
@@ -10,6 +15,4 @@ object JumpIfFalseOperation : Operation {
       else -> microcode.ip + 3
     }
   }
-
-  override fun toString() = "JMF"
 }
