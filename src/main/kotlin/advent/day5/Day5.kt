@@ -28,6 +28,5 @@ fun programs(): Sequence<IntArray> {
 fun readProgram(): IntArray? {
   val line = readLine() ?: return null
   if (line.isBlank()) return null
-  val tokens = line.split(',').filter { it != "-" }
-  return tokens.map { it.toInt() }.toIntArray()
+  return line.split(',').map { it.toInt() }.toIntArray()
 }

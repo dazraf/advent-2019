@@ -5,6 +5,9 @@ import advent.computer.CPU
 typealias OpCode = Int
 
 interface Operation {
+  /**
+   * numeric op code for this operation
+   */
   val opCode: OpCode
 
   /**
