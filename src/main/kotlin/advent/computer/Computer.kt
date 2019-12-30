@@ -13,8 +13,8 @@ import advent.computer.operation.*
  */
 class Computer(
   program: IntArray,
-  instructionSet: List<Operation> = DEFAULT_OPERATORS,
-  inputSequence: Sequence<Int> = emptySequence(),
+  instructionSet: List<Operation> = DEFAULT_INSTRUCTION_SET,
+  val input: Iterator<Int> = emptySequence<Int>().iterator(),
   val output: (Int) -> Unit = { println("output: $it") },
   val haltHandler: () -> Unit = {},
   val trace: (String) -> Unit = {}
@@ -22,20 +22,26 @@ class Computer(
 
   internal val memory = Memory(program)
   private val ops = instructionSet.map { it.opCode to it }.toMap()
-  internal val input = inputSequence.iterator()
 
   fun runProgram() {
-    generateSequence(0) {
-      when (opCode(it)) {
+    // Create a sequence of instruction pointers (ip), starting at zero
+    generateSequence(0) { ip ->
+      when (opCode(ip)) {
+        // if the opcode at ip is 99 then we halt,
+        // returning null to the sequence, thereby terminating it
         99 -> null.also {
           trace("HALT")
           haltHandler()
         }
-        else -> processOpCode(it)
+        // otherwise, we process the opcode
+        else -> processOpCode(ip)
       }
     }.last()
   }
 
+  /**
+   * process the opcode at instruction pointer [ip]
+   */
   private fun processOpCode(ip: Int): Int {
     val opCode = opCode(ip)
     val op = ops[opCode] ?: error("unknown opcode $opCode at position $ip")
@@ -43,6 +49,10 @@ class Computer(
     return op.execute(Microcode(ip, this, trace))
   }
 
+  /**
+   * retrieve the [OpCode] at instruction pointer [ip]
+   * N.B. the top two digits of the instruction is the opcode
+   */
   private fun opCode(ip: Int): OpCode = memory[ip] % 100
 
   companion object {
@@ -50,7 +60,7 @@ class Computer(
       Computer(memory).runProgram()
     }
 
-    val DEFAULT_OPERATORS = listOf(
+    val DEFAULT_INSTRUCTION_SET = listOf(
       AddOperation,
       MultiplyOperation,
       InputOperation,

@@ -20,7 +20,7 @@ private fun runProgram(program: IntArray, input: List<Int>): Int {
   var output = 0
   Computer(
     program = program,
-    inputSequence = input.asSequence(),
+    input = input.iterator(),
     output = { output = it }
   ).runProgram()
   return output

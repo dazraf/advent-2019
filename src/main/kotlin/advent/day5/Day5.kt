@@ -6,15 +6,15 @@ import advent.computer.Computer
 
 fun main() {
   programs().forEach { program ->
-    Computer(program = program, inputSequence = stdInput()).runProgram()
+    Computer(program = program, input = stdInput()).runProgram()
   }
 }
 
-fun stdInput(): Sequence<Int> {
+fun stdInput(): Iterator<Int> {
   return generateSequence {
     print("> ")
     readLine()?.toInt()
-  }
+  }.iterator()
 }
 
 fun trace(message: String) {

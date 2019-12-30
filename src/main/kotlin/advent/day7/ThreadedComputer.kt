@@ -18,7 +18,7 @@ class ThreadedComputer(program: IntArray, haltHandler: () -> Unit) {
   val inChannel = channel()
   val outChannel = channel()
   val computer = Computer(
-    program = program, haltHandler = haltHandler, inputSequence = inChannel.reader,
+    program = program, haltHandler = haltHandler, input = inChannel.reader.iterator(),
     output = outChannel.writer
   )
 
@@ -34,12 +34,18 @@ class ThreadedComputer(program: IntArray, haltHandler: () -> Unit) {
   }
 }
 
+/**
+ * binds the output stream from [this] to the input stream of [rhs]
+ */
 infix fun ThreadedComputer.bind(rhs: ThreadedComputer): ThreadedComputer {
   val writer = rhs.inChannel.writer
   outChannel.register(writer::invoke)
   return rhs
 }
 
+/**
+ * binds the output stream of [this] to the [rhs] function
+ */
 infix fun ThreadedComputer.bind(rhs: (Int) -> Unit) {
   outChannel.register(rhs)
 }
