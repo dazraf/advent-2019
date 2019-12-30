@@ -2,18 +2,18 @@ package advent.computer
 
 import advent.computer.operation.*
 
+/**
+ * This is the "computer" that's used by several of the challenges
+ * It takes program and executes it using the [runProgram] method.
+ * Optionally, it can be configured with
+ * - an instruction set;
+ * - a sequence of Ints from an I/O bus;
+ * - a function to output Ints to an I/O bus;
+ * - a function to receive "trace" level logs from the internals of the computer
+ */
 class Computer(
   program: IntArray,
-  operations: List<Operation> = listOf(
-    AddOperation,
-    MultiplyOperation,
-    InputOperation,
-    OutputOperation,
-    LessThanOperation,
-    EqualsOperation,
-    JumpIfFalseOperation,
-    JumpIfTrueOperation
-  ),
+  instructionSet: List<Operation> = DEFAULT_OPERATORS,
   inputSequence: Sequence<Int> = emptySequence(),
   val output: (Int) -> Unit = { println("output: $it") },
   val haltHandler: () -> Unit = {},
@@ -21,8 +21,7 @@ class Computer(
 ) {
 
   internal val memory = Memory(program)
-
-  private val ops = operations.map { it.opCode to it }.toMap()
+  private val ops = instructionSet.map { it.opCode to it }.toMap()
   internal val input = inputSequence.iterator()
 
   fun runProgram() {
@@ -50,5 +49,16 @@ class Computer(
     fun runProgram(memory: IntArray) {
       Computer(memory).runProgram()
     }
+
+    val DEFAULT_OPERATORS = listOf(
+      AddOperation,
+      MultiplyOperation,
+      InputOperation,
+      OutputOperation,
+      LessThanOperation,
+      EqualsOperation,
+      JumpIfFalseOperation,
+      JumpIfTrueOperation
+    )
   }
 }
