@@ -1,6 +1,6 @@
 package advent.computer.operation
 
-import advent.computer.Microcode
+import advent.computer.CpuState
 
 typealias OpCode = Int
 
@@ -20,10 +20,10 @@ abstract class Operation {
   abstract val opCode: OpCode
 
   /**
-   * Executes the op code given a [microcode] interface
-   * @return the new IP
+   * Executes the op code given a [cpuState] interface
+   * @return the new [CpuState]
    */
-  abstract fun execute(microcode: Microcode): Int
+  abstract fun execute(cpuState: CpuState): CpuState
 
   override fun toString() = symbol
 }

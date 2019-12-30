@@ -1,6 +1,6 @@
 package advent.computer.operation
 
-import advent.computer.Microcode
+import advent.computer.CpuState
 
 /**
  * Checks that value of parameter 1 is less than parameter 2 and stores the result
@@ -10,14 +10,16 @@ object LessThanOperation : Operation() {
 
   override val symbol = "LT"
   override val opCode: OpCode = 7
-  override fun execute(microcode: Microcode): Int {
-    val p1 = microcode.parameter(1)
-    val p2 = microcode.parameter(2)
-    val p3 = microcode.rawParameter(3)
-    when {
-      p1 < p2 -> microcode.store(p3, 1)
-      else -> microcode.store(p3, 0)
+  override fun execute(cpuState: CpuState): CpuState {
+    cpuState.apply {
+      val p1 = parameter(1)
+      val p2 = parameter(2)
+      val p3 = rawParameter(3)
+      when {
+        p1 < p2 -> store(p3, 1)
+        else -> store(p3, 0)
+      }
+      return incrementIP(4)
     }
-    return microcode.ip + 4
   }
 }

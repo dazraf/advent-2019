@@ -12,7 +12,7 @@ import advent.computer.operation.*
  * - a function to receive "trace" level logs from the internals of the computer
  */
 class Computer(
-  program: IntArray,
+  val memory: Memory,
   instructionSet: List<Operation> = DEFAULT_INSTRUCTION_SET,
   val input: Iterator<Int> = emptySequence<Int>().iterator(),
   val output: (Int) -> Unit = { println("output: $it") },
@@ -20,13 +20,21 @@ class Computer(
   val trace: (String) -> Unit = {}
 ) {
 
-  internal val memory = Memory(program)
+  constructor(
+    program: IntArray,
+    instructionSet: List<Operation> = DEFAULT_INSTRUCTION_SET,
+    input: Iterator<Int> = emptySequence<Int>().iterator(),
+    output: (Int) -> Unit = { println("output: $it") },
+    haltHandler: () -> Unit = {},
+    trace: (String) -> Unit = {}
+  ) : this(Memory(program), instructionSet, input, output, haltHandler, trace)
+
   private val ops = instructionSet.map { it.opCode to it }.toMap()
 
-  fun runProgram() {
+  fun runProgram(): Computer {
     // Create a sequence of instruction pointers (ip), starting at zero
-    generateSequence(0) { ip ->
-      when (opCode(ip)) {
+    generateSequence(CpuState(0, this, trace)) { state ->
+      when (state.opCode()) {
         // if the opcode at ip is 99 then we halt,
         // returning null to the sequence, thereby terminating it
         99 -> null.also {
@@ -34,31 +42,24 @@ class Computer(
           haltHandler()
         }
         // otherwise, we process the opcode
-        else -> processOpCode(ip)
+        else -> processOpCode(state)
       }
     }.last()
+    return this
   }
 
   /**
-   * process the opcode at instruction pointer [ip]
+   * process the opcode at instruction pointer in [state]
    */
-  private fun processOpCode(ip: Int): Int {
-    val opCode = opCode(ip)
-    val op = ops[opCode] ?: error("unknown opcode $opCode at position $ip")
-    trace("EXEC @$ip $op")
-    return op.execute(Microcode(ip, this, trace))
+  private fun processOpCode(state: CpuState): CpuState {
+    val opCode = state.opCode()
+    val op = ops[opCode] ?: error("unknown opcode $opCode at position ${state.ip}")
+    trace("EXEC @${state.ip} $op")
+    return op.execute(state)
   }
-
-  /**
-   * retrieve the [OpCode] at instruction pointer [ip]
-   * N.B. the top two digits of the instruction is the opcode
-   */
-  private fun opCode(ip: Int): OpCode = memory[ip] % 100
 
   companion object {
-    fun runProgram(memory: IntArray) {
-      Computer(memory).runProgram()
-    }
+    fun runProgram(memory: IntArray) = Computer(memory).runProgram()
 
     val DEFAULT_INSTRUCTION_SET = listOf(
       AddOperation,

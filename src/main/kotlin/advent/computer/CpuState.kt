@@ -1,9 +1,13 @@
 package advent.computer
 
+import advent.computer.operation.OpCode
+
 /**
- * Abstract for a CPU "microcode" that's used by an [advent.computer.operation.Operation]
+ * Abstract for a CPU's state and "microcode" that's used by an [advent.computer.operation.Operation]
+ * to update this state. Memory and IO ops have side effects. Updates to the registers of the machine
+ * are immutable and side-effect free.
  */
-class Microcode(
+data class CpuState(
   val ip: Int, private val computer: Computer, val trace: (String) -> Unit
 ) {
 
@@ -56,4 +60,18 @@ class Microcode(
    * Write a [value] to the IO subsystem
    */
   fun write(value: Int) = computer.output(value)
+
+  fun setIP(newIP: Int) = copy(ip = newIP)
+  fun incrementIP(delta: Int) = setIP(ip + delta)
+
+  /**
+   * retrieve the [OpCode] at instruction pointer [ip]
+   * N.B. the top two digits of the instruction is the opcode
+   */
+  fun opCode(ip: Int): OpCode = computer.memory[ip] % 100
+
+  /**
+   * retrieve the [OpCode] at the instruction pointer
+   */
+  fun opCode(): OpCode = opCode(ip)
 }

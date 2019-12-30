@@ -9,8 +9,8 @@ class ComputerTest {
     val p1 = 2
     val p2 = 5
     val resultLocation = 5
-    val memory = intArrayOf(1101, p1, p2, resultLocation, 99, 0)
-    Computer.runProgram(memory)
+    val program = intArrayOf(1101, p1, p2, resultLocation, 99, 0)
+    val memory = Computer.runProgram(program).memory
     assertEquals(p1 + p2, memory[resultLocation])
   }
 
@@ -19,8 +19,8 @@ class ComputerTest {
     val p1 = 2
     val p2 = 5
     val resultLocation = 5
-    val memory = intArrayOf(1102, p1, p2, resultLocation, 99, 0)
-    Computer.runProgram(memory)
+    val program = intArrayOf(1102, p1, p2, resultLocation, 99, 0)
+    val memory = Computer.runProgram(program).memory
     assertEquals(p1 * p2, memory[resultLocation])
   }
 
@@ -29,8 +29,8 @@ class ComputerTest {
     val p1 = 2
     val p2 = 5
     val resultLocation = 6
-    val memory = intArrayOf(1001, 5, p2, resultLocation, 99, p1, 0)
-    Computer.runProgram(memory)
+    val program = intArrayOf(1001, 5, p2, resultLocation, 99, p1, 0)
+    val memory = Computer.runProgram(program).memory
     assertEquals(p1 + p2, memory[resultLocation])
   }
 
@@ -39,8 +39,8 @@ class ComputerTest {
     val p1 = 2
     val p2 = 5
     val resultLocation = 6
-    val memory = intArrayOf(1002, 5, p2, resultLocation, 99, p1, 0)
-    Computer.runProgram(memory)
+    val program = intArrayOf(1002, 5, p2, resultLocation, 99, p1, 0)
+    val memory = Computer.runProgram(program).memory
     assertEquals(p1 * p2, memory[resultLocation])
   }
 }
