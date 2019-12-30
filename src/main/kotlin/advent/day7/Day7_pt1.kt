@@ -3,7 +3,8 @@ package advent.day7
 import advent.computer.Computer
 
 fun main() {
-  permutation((0..4).toList())
+  val numberOfComputers = 5
+  permutation((1..numberOfComputers).toList())
     .map { phaseVector -> runAmplifiers(phaseVector, PROGRAM) }
     .max()
     .also { println("maximum thrust: $it") }
